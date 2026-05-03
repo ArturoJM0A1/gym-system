@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.gym.gym_system.dto.MemberRequestDTO;
+import com.gym.gym_system.dto.MemberResponseDTO;
 import com.gym.gym_system.model.Member;
 import com.gym.gym_system.repository.MemberRepository;
 
@@ -20,29 +22,37 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member save(Member member) {
-        return repository.save(member);
+    public MemberResponseDTO save(MemberRequestDTO dto) {
+        Member member = MemberMapper.toEntity(dto);
+        Member saved = repository.save(member);
+        return MemberMapper.toDTO(saved);
     }
 
     @Override
-    public List<Member> findAll() {
-        return repository.findAll();
+    public List<MemberResponseDTO> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(MemberMapper::toDTO)
+                .toList();
     }
 
     @Override
-    public Member findById(Long id) {
-        return repository.findById(id).orElse(null);
+    public MemberResponseDTO findById(Long id) {
+        Member member = repository.findById(id).orElse(null);
+        return member != null ? MemberMapper.toDTO(member) : null;
     }
 
     @Override
-    public Member update(Long id, Member member) {
+    public MemberResponseDTO update(Long id, MemberRequestDTO dto) {
         Member existing = repository.findById(id).orElse(null);
 
         if (existing != null) {
-            existing.setName(member.getName());
-            existing.setAge(member.getAge());
-            existing.setMembershipType(member.getMembershipType());
-            return repository.save(existing);
+            existing.setName(dto.getName());
+            existing.setAge(dto.getAge());
+            existing.setMembershipType(dto.getMembershipType());
+
+            Member updated = repository.save(existing);
+            return MemberMapper.toDTO(updated);
         }
 
         return null;
@@ -50,6 +60,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 }

@@ -2,7 +2,6 @@ package com.gym.gym_system.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gym.gym_system.model.Member;
+import com.gym.gym_system.dto.MemberRequestDTO;
+import com.gym.gym_system.dto.MemberResponseDTO;
 import com.gym.gym_system.service.MemberService;
 
 /**
@@ -27,33 +27,24 @@ public class MemberController {
         this.service = service;
     }
 
-    // CREATE
     @PostMapping
-    public Member create(@RequestBody Member member) {
-        return service.save(member);
+    public MemberResponseDTO create(@RequestBody MemberRequestDTO dto) {
+        return service.save(dto);
     }
 
-    // READ ALL
     @GetMapping
-    public List<Member> getAll() {
+    public List<MemberResponseDTO> getAll() {
         return service.findAll();
     }
 
-    // READ ONE
     @GetMapping("/{id}")
-    public Member getById(@PathVariable Long id) {
+    public MemberResponseDTO getById(@PathVariable Long id) {
         return service.findById(id);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
-    public Member update(@PathVariable Long id, @RequestBody Member member) {
-        return service.update(id, member);
+    public MemberResponseDTO update(@PathVariable Long id, @RequestBody MemberRequestDTO dto) {
+        return service.update(id, dto);
     }
 
-    // DELETE
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
 }

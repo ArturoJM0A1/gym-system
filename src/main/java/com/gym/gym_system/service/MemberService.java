@@ -2,20 +2,21 @@ package com.gym.gym_system.service;
 
 import java.util.List;
 
-import com.gym.gym_system.model.Member;
+import com.gym.gym_system.dto.MemberRequestDTO;
+import com.gym.gym_system.dto.MemberResponseDTO;
 
 /**
  * Interface del servicio
  */
 public interface MemberService {
 
-    Member save(Member member);
+    MemberResponseDTO save(MemberRequestDTO dto);
 
-    List<Member> findAll();
+    List<MemberResponseDTO> findAll();
 
-    Member findById(Long id);
+    MemberResponseDTO findById(Long id);
 
-    Member update(Long id, Member member);
+    MemberResponseDTO update(Long id, MemberRequestDTO dto);
 
     void delete(Long id);
 }
